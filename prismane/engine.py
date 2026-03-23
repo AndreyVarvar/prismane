@@ -22,9 +22,17 @@ class Engine():
 
         self.master_panel = MasterControlPanel()
 
+        self._init_scenes()
+    
+    def populate_scenes(self, scenes: list[Scene], initial_scene_name: str):
+        for scene in scenes:
+            self.scenes[scene().name] = scene
+        
+        self.current_scene: Scene = self.scenes[initial_scene_name]()
+
+    def _init_scenes(self):
         self.scenes = {}
         self.current_scene: Scene = None
-        self.init_scenes()
     
     def add_scene(self, scene: Scene):
         if self.current_scene is None:
@@ -66,4 +74,7 @@ class Engine():
             await asyncio.sleep(0)
 
     def start(self):
+        if self.current_scene is None:
+            raise Exception("No initial scene was defined.")
+
         asyncio.run(self.run())

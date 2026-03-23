@@ -3,27 +3,21 @@ from .object import ObjectArray
 
 
 class Scene():
-    def __init__(self, name: str, master_panel: MasterControlPanel, amnesia:bool=False):
-        super().__init__([], 0)
+    def __init__(self, name: str):
         self.name = name
         self.objects = ObjectArray()
 
         self.update_z_sorting = False
 
-        self.amnesia: bool = amnesia
-
         self.change_scenes = False
         self.next_scene = None
     
-    def queue_next_scene(self, scene, master_panel: MasterControlPanel):
-        if self.amnesia:
-            self.forget(master_panel)
-
+    def queue_next_scene(self, next_scene_name):
         self.change_scenes = True
-        self.next_scene = scene
-
-    def forget(self, master_panel: MasterControlPanel):
-        self = Scene(self.name, master_panel, self.amnesia)
+        self.next_scene = next_scene_name
+    
+    def unload(self):
+        pass
 
     def update(self, master_panel: MasterControlPanel):
         for obj in self.objects:

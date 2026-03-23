@@ -135,12 +135,12 @@ class MusicControlPanel():
         self.fadeout_elapsed_time = 0
         self.fadeout = False
 
-        self.music_volume = 1
+        self.volume = 1
         self.music_set_volume = 1  # volume of the music set when it was set
         self.music_loop = None
 
     def update(self, dt: float):
-        pg.mixer.music.set_volume(self.volume * self.music_volume * self.fadeout_volume * self.music_set_volume)
+        pg.mixer.music.set_volume(self.volume * self.fadeout_volume * self.music_set_volume)
 
         if self.fadeout:
             self.fadeout_elapsed_time += dt
@@ -177,7 +177,7 @@ class MusicControlPanel():
         self.fadeout_time = fadeout_time
 
     def pause_music(self):
-        self.music_volume = 0
+        self.volume = 0
 
     def start_music(self):
-        self.music_volume = 1
+        self.volume = 1
