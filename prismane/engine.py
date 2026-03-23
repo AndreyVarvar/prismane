@@ -5,12 +5,12 @@ from .scene import Scene
 import asyncio
 
 class Engine():
-    def __init__(self, screen_width, screen_height, title, fps=60):
+    def __init__(self, screen_size: tuple[int, int], title: str, fps: int=60):
         pg.mixer.pre_init(buffer=2048)
         pg.init()
         
-        self.screen_size = self.screen_width, self.screen_height = (screen_width, screen_height)
-        self.display = pg.display.set_mode((screen_width, screen_height))
+        self.screen_size = self.screen_width, self.screen_height = screen_size
+        self.display = pg.display.set_mode(screen_size)
         pg.display.set_caption(title)
 
         # internal variables
