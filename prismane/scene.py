@@ -1,29 +1,29 @@
-from panels import MasterControlPanel
-from object import ObjectArray
+from .panels import MasterControlPanel
+from .object import ObjectArray
 
 
 class Scene():
-    def __init__(self, name: str, master_panel: MasterControlPanel, dementia:bool=False):
+    def __init__(self, name: str, master_panel: MasterControlPanel, amnesia:bool=False):
         super().__init__([], 0)
         self.name = name
         self.objects = ObjectArray()
 
         self.update_z_sorting = False
 
-        self.dementia: bool = False
+        self.amnesia: bool = amnesia
 
         self.change_scenes = False
         self.next_scene = None
     
     def queue_next_scene(self, scene, master_panel: MasterControlPanel):
+        if self.amnesia:
+            self.forget(master_panel)
+
         self.change_scenes = True
         self.next_scene = scene
 
-        if self.dementia:
-            self.forget(master_panel)
-
     def forget(self, master_panel: MasterControlPanel):
-        self.__init__(self.name, master_panel)
+        self = Scene(self.name, master_panel, self.amnesia)
 
     def update(self, master_panel: MasterControlPanel):
         for obj in self.objects:

@@ -1,15 +1,14 @@
 import pygame as pg
-from panels import MasterControlPanel
-from scene import Scene
+from .panels import MasterControlPanel
+from .scene import Scene
 
 import asyncio
 
-pg.mixer.pre_init(buffer=2048)
-pg.init()
-
-
 class Engine():
     def __init__(self, screen_width, screen_height, title, fps=60):
+        pg.mixer.pre_init(buffer=2048)
+        pg.init()
+        
         self.screen_size = self.screen_width, self.screen_height = (screen_width, screen_height)
         self.display = pg.display.set_mode((screen_width, screen_height))
         pg.display.set_caption(title)
@@ -66,5 +65,5 @@ class Engine():
 
             await asyncio.sleep(0)
 
-    def launch(self):
+    def start(self):
         asyncio.run(self.run())
