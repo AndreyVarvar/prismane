@@ -22,22 +22,13 @@ class Engine():
 
         self.master_panel = MasterControlPanel()
 
-        self._init_scenes()
-    
-    def populate_scenes(self, scenes: list[Scene], initial_scene_name: str):
-        for scene in scenes:
-            self.scenes[scene().name] = scene
-        
-        self.current_scene: Scene = self.scenes[initial_scene_name]()
-
-    def _init_scenes(self):
         self.scenes = {}
         self.current_scene: Scene = None
     
-    def add_scene(self, scene: Scene):
-        if self.current_scene is None:
-            self.current_scene = scene
-    
+    def populate_scenes(self, scenes: dict[str, type[Scene]], initial_scene_name: str):
+        self.scenes = scenes
+        self.current_scene = self.scenes[initial_scene_name]()
+
     def update(self):
         dt = self.clock.tick(self.FPS) / 1000  # divide by 1000 to get seconds since last call
         self.master_panel.update(dt, self.events)
@@ -45,16 +36,15 @@ class Engine():
         self.current_scene.update(self.master_panel)
 
         if self.current_scene.change_scenes:
-            new_scene = self.current_scene.next_scene
-            self.master_panel.stop_music()
-            self.current_scene = self.scenes[new_scene](self.master_panel)
+            new_scene: Scene = self.current_scene.next_scene
+            self.master_panel.music_panel.stop_music()
+            self.current_scene = self.scenes[new_scene]()
 
     def check_events(self):
         self.events = pg.event.get()
         for event in self.events:
             if event.type == pg.QUIT:
                 self.running = False
-
 
 
     def draw(self):

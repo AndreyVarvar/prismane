@@ -1,11 +1,10 @@
 from .panels import MasterControlPanel
-from .object import ObjectArray
+from .object import ObjectGroup
 
 
 class Scene():
-    def __init__(self, name: str):
-        self.name = name
-        self.objects = ObjectArray()
+    def __init__(self):
+        self.objects: ObjectGroup = ObjectGroup()
 
         self.update_z_sorting = False
 

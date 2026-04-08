@@ -1,25 +1,24 @@
-from .components import Component
+from __future__ import annotations
 from .panels import MasterControlPanel
 import pygame as pg
 
 
 class Object():
-    def __init__(self, idx: int, name: str, components: list[Component], z_index:int=1):
+    def __init__(self, idx: int, name: str, z_index:int=1):
         self.idx = idx
         self.name = name
         self.z_index = z_index
-        self.components = components
 
-    def update(self, master_panel: MasterControlPanel, other_objects: list):
+    def update(self, master_panel: MasterControlPanel, other_objects: ObjectGroup):
         pass
 
     def draw(self, surface: pg.Surface, master_panel: MasterControlPanel):
         pass
 
 
-class ObjectArray():
+class ObjectGroup():
     def __init__(self):
-        self.objects: list[Object] = set()
+        self.objects: list[Object] = []
 
     def append(self, object: Object):
         self.objects.append(object)
@@ -32,18 +31,6 @@ class ObjectArray():
             if obj in self.objects:
                 self.objects.remove(obj)
     
-    def filter(self, components: list[Component]) -> list[Object]:
-        filtered = []
-        for obj in self.objects:
-            satisfies = True
-            for component in components:
-                if component not in obj.components:
-                    satisfies = False
-                    break
-            if satisfies:
-                filtered.append(obj)
-        return filtered
-
     def __len__(self):
         return len(self.objects)
 
@@ -52,7 +39,7 @@ class ObjectArray():
             yield obj
 
     def __add__(self, other):
-        if isinstance(other, ObjectArray):
+        if isinstance(other, ObjectGroup):
             self.objects += other.objects
             return self
         else:
