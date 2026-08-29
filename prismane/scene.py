@@ -1,12 +1,11 @@
 from .panels import MasterControlPanel
-from .object import ObjectGroup
+from .element import ElementGroup
+import pygame as pg
 
 
 class Scene():
     def __init__(self):
-        self.objects: ObjectGroup = ObjectGroup()
-
-        self.update_z_sorting = False
+        self.elements: ElementGroup = ElementGroup()
 
         self.change_scenes = False
         self.next_scene = None
@@ -19,14 +18,11 @@ class Scene():
         pass
 
     def update(self, master_panel: MasterControlPanel):
-        for obj in self.objects:
-            obj.update(master_panel, self.objects)
+        for elem in self.elements:
+            elem.update(master_panel, self.elements)
 
         master_panel.sound_panel.play_sound_queue()
 
-    def draw(self, surface, game_data):
-        if self.update_z_sorting:
-            self.objects.sort()
-
-        for obj in self.objects:
-            obj.draw(surface, game_data)
+    def draw(self, surface: pg.Surface, master_panel: MasterControlPanel):
+        for elem in self.elements:
+            elem.draw(surface, master_panel)
